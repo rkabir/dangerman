@@ -15,7 +15,6 @@ while !f.eof? do
   uid = arr[0].gsub("-","")
   username = arr[2][1..-2]
   password = arr[3][1..-2].unpack("H*").first
-  puts password
   hint_string = arr[4][1..-1]
   password_hint = hint_string.empty? ? nil : hint_string
   begin

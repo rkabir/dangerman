@@ -8,6 +8,11 @@ f = File.open(ARGV[0])
 f.readline
 counter = 1
 
+start_time = Time.now
+checkpoint = Time.now
+
+puts "starting at #{start_time}"
+
 while !f.eof? do
   line = f.readline
 
@@ -29,7 +34,17 @@ while !f.eof? do
     puts "ERROR"
     puts line
   end
-  puts "Processing line #{counter}" if counter % 10000 == 0
+
+  if counter % 1000 == 0
+    puts "--------------------"
+    puts "Processing line #{counter}"
+    new_checkpoint = Time.now
+    puts "#{new_checkpoint - checkpoint} seconds since 10k ago"
+    puts "#{(new_checkpoint - start_time).to_i} seconds since start"
+    checkpoint = new_checkpoint
+    puts "--------------------"
+  end
+
   counter = counter + 1
 
 end

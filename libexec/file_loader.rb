@@ -15,13 +15,19 @@ puts "starting at #{start_time}"
 
 while !f.eof? do
   line = f.readline
+  begin
+    arr = line.split("|")
+    uid = arr[0].gsub("-","")
+    username = arr[2][1..-2]
+    password = arr[3][1..-2].unpack("H*").first
+    hint_string = arr[4][1..-1]
+    password_hint = hint_string.empty? ? nil : hint_string
+  rescue
+    puts "ERROR"
+    puts line
+    puts "---------------"
+  end
 
-  arr = line.split("|")
-  uid = arr[0].gsub("-","")
-  username = arr[2][1..-2]
-  password = arr[3][1..-2].unpack("H*").first
-  hint_string = arr[4][1..-1]
-  password_hint = hint_string.empty? ? nil : hint_string
   begin
     User.create(
       uid: uid,
@@ -35,7 +41,7 @@ while !f.eof? do
     puts line
   end
 
-  if counter % 1000 == 0
+  if counter % 10000 == 0
     puts "--------------------"
     puts "Processing line #{counter}"
     new_checkpoint = Time.now
